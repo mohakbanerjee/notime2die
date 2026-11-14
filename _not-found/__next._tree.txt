@@ -1,0 +1,4 @@
+:HL["/notime2die/_next/static/chunks/092l-ym0b7-00.css","style"]
+2:[["children",{"s":"__PAGE__","h":160}]]
+1:[["children",{"s":"/_not-found","h":96,"c":"$Q2"}]]
+0:{"b":"mQBVOcY8xPdTQ8KZVbwxp","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
