@@ -13,10 +13,12 @@ export function DemoRunner() {
   const [narration, setNarration] = useState("");
   const [progress, setProgress] = useState(0);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const tickRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     return () => {
       timers.current.forEach(clearTimeout);
+      if (tickRef.current) clearInterval(tickRef.current);
     };
   }, []);
 
@@ -25,6 +27,8 @@ export function DemoRunner() {
   function stop() {
     timers.current.forEach(clearTimeout);
     timers.current = [];
+    if (tickRef.current) clearInterval(tickRef.current);
+    tickRef.current = null;
     store.setDemoPlaying(false);
     setProgress(0);
   }
@@ -50,15 +54,17 @@ export function DemoRunner() {
         setTimeout(() => {
           step.run(api);
           setProgress(step.atMs);
-          if (step.label === "Done") store.setDemoPlaying(false);
+          if (step.label === "Done") {
+            store.setDemoPlaying(false);
+            if (tickRef.current) clearInterval(tickRef.current);
+          }
         }, step.atMs)
       );
     }
 
-    const tick = setInterval(() => {
+    tickRef.current = setInterval(() => {
       setProgress(Math.min(30000, Date.now() - start));
     }, 100);
-    timers.current.push(tick as unknown as ReturnType<typeof setTimeout>);
   }
 
   return (

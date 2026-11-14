@@ -26,6 +26,20 @@ Optional DONKI refresh (cached JSON ships with the app):
 npm run fetch:donki
 ```
 
+Open [http://localhost:3000](http://localhost:3000) — use **Run demo** on the Bridge for the 30s wow moment.
+
+## Screens
+
+| Route | Purpose |
+|-------|---------|
+| `/` | Mission Bridge — delay dial, vitals, body map, alerts |
+| `/indicator/[id]` | Deep dive chart + sources + actions |
+| `/checkin` | Daily self-report (~90s) |
+| `/pvt` | 30s demo or 3 min PVT |
+| `/autonomy` | Triage console + ground packet queue |
+| `/timeline` | Day scrubber, dose/bone, DONKI overlays |
+| `/about` | Evidence library, privacy, disclaimer |
+
 ## NASA / public data used
 
 - Light-time references (Moon, Mars, deep space) — NASA Science
