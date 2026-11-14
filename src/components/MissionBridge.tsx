@@ -19,6 +19,7 @@ import { BodyMap, type RegionLevels } from "./BodyMap";
 import { AlertStack } from "./AlertStack";
 import { MiniTimeline } from "./MiniTimeline";
 import { ModuleDrawer } from "./ModuleDrawer";
+import { DemoRunner } from "./DemoRunner";
 import type { RiskLevel } from "@/lib/types";
 
 export function MissionBridge() {
@@ -153,6 +154,8 @@ export function MissionBridge() {
           Body map: {worst === "green" ? "NOMINAL" : worst.toUpperCase()}
         </span>
       </motion.div>
+
+      <DemoRunner />
 
       <Panel title="Earth delay">
         <DelayDial
