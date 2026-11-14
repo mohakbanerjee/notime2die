@@ -6,12 +6,19 @@ Near Earth it loops in the flight surgeon. Far from Earth it tells the crew exac
 
 > Not a medical device. Research prototype. No NASA logos or official branding. Wordmark: **NoTime2Die**.
 
-## Run
+## Live demo (GitHub Pages)
+
+**https://mohakbanerjee.github.io/notime2die/**
+
+(Public link — no install needed. Deploys automatically on every push to `master`.)
+
+## Run locally
 
 ```bash
 npm install
 npm run dev
 ```
+
 
 Build / test:
 
