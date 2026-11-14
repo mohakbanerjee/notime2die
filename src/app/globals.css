@@ -1,26 +1,105 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-deep: #050814;
+  --bg-panel: #0a1224;
+  --bg-panel-2: #0d1830;
+  --border-cyan: #1ee6ff;
+  --border-dim: rgba(30, 230, 255, 0.28);
+  --glow-cyan: rgba(30, 230, 255, 0.35);
+  --text: #e8f4ff;
+  --text-dim: #8aa0b8;
+  --status-green: #2ee59b;
+  --status-amber: #f5b942;
+  --status-red: #ff4d6d;
+  --grid-line: rgba(30, 230, 255, 0.06);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--bg-deep);
+  --color-foreground: var(--text);
+  --color-panel: var(--bg-panel);
+  --color-cyan: var(--border-cyan);
+  --color-dim: var(--text-dim);
+  --color-status-green: var(--status-green);
+  --color-status-amber: var(--status-amber);
+  --color-status-red: var(--status-red);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: var(--bg-deep);
+  color: var(--text);
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+/* Subtle mission-control grid + scanline atmosphere */
+.mission-bg {
+  background-color: var(--bg-deep);
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+    radial-gradient(ellipse at top, rgba(30, 230, 255, 0.08), transparent 55%);
+  background-size: 40px 40px, 40px 40px, 100% 100%;
+  position: relative;
+}
+
+.mission-bg::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.08) 3px
+  );
+  opacity: 0.35;
+  z-index: 50;
+}
+
+.panel-glow {
+  box-shadow: 0 0 0 1px var(--border-dim), 0 0 24px var(--glow-cyan);
+}
+
+.num {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.label-caps {
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.pulse-amber {
+  animation: pulse-soft 1.6s ease-in-out infinite;
+}
+
+.pulse-red {
+  animation: pulse-soft 0.9s ease-in-out infinite;
 }

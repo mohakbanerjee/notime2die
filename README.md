@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NoTime2Die
 
-## Getting Started
+Health copilot for astronauts that **knows how far Earth is**. Built for NASA Space Apps 2026 — challenge *Create Health Monitoring Software for Astronauts on Space Missions*.
 
-First, run the development server:
+Near Earth it loops in the flight surgeon. Far from Earth it tells the crew exactly what to do now. Same alert, different autonomy.
+
+> Not a medical device. Research prototype. No NASA logos or official branding. Wordmark: **NoTime2Die**.
+
+## Run
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Build / test:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm test
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Optional DONKI refresh (cached JSON ships with the app):
 
-## Learn More
+```bash
+npm run fetch:donki
+```
 
-To learn more about Next.js, take a look at the following resources:
+## NASA / public data used
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Light-time references (Moon, Mars, deep space) — NASA Science
+- Mars blackout / distance hazard — NTRS + HRP
+- Bone loss rates — NASA bone risk page
+- Curiosity RAD dose rates — published Science paper
+- Career dose limit 600 mSv — OCHMO technical brief
+- ISS sleep average — Barger 2014
+- Cognition / PVT — UPenn Cognition
+- Bio-Monitor capability list — CSA
+- RIDGE hazards + HRP risks + SANS — NASA HRP / HRR
+- Earth Independent Medical Operations — NTRS
+- Cached DONKI SEP events — CCMC DONKI API (offline JSON)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+All astronaut vitals and crew names are **simulated**.
 
-## Deploy on Vercel
+## Architecture (text)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+[ Mission settings store (zustand) ]
+        |  delay, blackout, mission, day, scenario, crew
+        v
+[ Simulator ] ----per-minute/day signals----> [ Health modules ]
+                                                    |
+                                              RiskResult[]
+                                                    v
+                                         [ Triage + autonomy mode ]
+                                                    |
+                              EARTH_GUIDED | CREW_LED | FULL_AUTONOMY
+                                                    v
+                              [ HUD: Bridge / Body map / Autonomy / Timeline ]
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `src/lib/` — evidence, delay, autonomy, missions, simulator, store, triage, explain
+- `src/modules/` — one file per health domain; registry wires them everywhere
+- `src/components/` — Panel, StatusPill, Gauge, Sparkline, HudHeader, DelayDial, …
+- `src/data/` — cached DONKI SEP JSON; room for OSDR refs
+- `tests/` — vitest
+
+## Team hooks
+
+1. **New module** — add `src/modules/<name>.ts` + one line in `src/modules/registry.ts`.
+2. **Evidence** — entries with `demoAssumption: true` need real sources (`src/lib/evidence.ts`).
+3. **Tune autonomy** — cutoffs in evidence + `src/lib/autonomy.ts` / `delay.ts`.
+4. **Ideas board** — `TEAM_IDEAS.md`.
+5. **OSDR** — drop reference data under `src/data/` (Inspiration4 OSD-569 / OSD-575).
+6. **Flags** — `src/lib/flags.ts` to hide unfinished UI for the video.
+
+See also: `TODO_SUNDAY.md`, `AI_USAGE.md`.
